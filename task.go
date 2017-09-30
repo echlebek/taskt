@@ -6,6 +6,11 @@ import (
 	"time"
 )
 
+var (
+	ErrConcurrentExecution = "cannot allow concurrent executions"
+	ErrTimeoutExceeded     = "timeout exceeded"
+)
+
 type MSDuration time.Duration
 
 func (m *MSDuration) MarshalJSON() ([]byte, error) {
