@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	bind = flag.String("port", ":8888", "Address to bind to")
+	bind = flag.String("port", ":3000", "Address to bind to")
 )
 
 func main() {
