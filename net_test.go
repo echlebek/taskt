@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net"
 	"testing"
+	"time"
 )
 
 type Test struct {
@@ -74,6 +75,7 @@ func doTest(t *testing.T, test Test) {
 		t.Fatal(err)
 	}
 	defer conn.Close()
+	startTime := time.Now().Unix()
 	_, err = fmt.Fprintln(conn, test.Input)
 	if err != nil {
 		t.Fatal(err)
@@ -90,6 +92,14 @@ func doTest(t *testing.T, test Test) {
 	}
 	if got, want := result.Error, test.Exp.Error; got != want {
 		t.Errorf("bad error: got %q, want %q", got, want)
+	}
+	if len(test.Exp.Error) == 0 {
+		if result.ExecutedAt < startTime {
+			t.Errorf("ExecutedAt: %d, startTime: %d", result.ExecutedAt, startTime)
+		}
+		if result.DurationMS == 0 {
+			t.Error("DurationMS not set")
+		}
 	}
 }
 
