@@ -185,6 +185,7 @@ func (t *TaskServer) runTask(conn net.Conn, task *TaskRequest) *TaskResult {
 	}
 }
 
+// Close closes the TaskServer and its underlying Listener
 func (t *TaskServer) Close() {
 	close(t.done)
 }

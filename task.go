@@ -12,6 +12,7 @@ var (
 	ErrTimeoutExceeded     = errors.New("timeout exceeded")
 )
 
+// MSDuration is a convenience type representing milliseconds
 type MSDuration time.Duration
 
 func (m MSDuration) MarshalJSON() ([]byte, error) {
