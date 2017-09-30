@@ -13,8 +13,8 @@ var (
 
 type MSDuration time.Duration
 
-func (m *MSDuration) MarshalJSON() ([]byte, error) {
-	ms := float64(*m) / float64(time.Millisecond)
+func (m MSDuration) MarshalJSON() ([]byte, error) {
+	ms := float64(m) / float64(time.Millisecond)
 	return json.Marshal(ms)
 }
 
