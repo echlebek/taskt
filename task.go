@@ -2,13 +2,14 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
 )
 
 var (
-	ErrConcurrentExecution = "cannot allow concurrent executions"
-	ErrTimeoutExceeded     = "timeout exceeded"
+	ErrConcurrentExecution = errors.New("cannot allow concurrent executions")
+	ErrTimeoutExceeded     = errors.New("timeout exceeded")
 )
 
 type MSDuration time.Duration
