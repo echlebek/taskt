@@ -75,30 +75,28 @@ func (t *TaskServer) serve(conn net.Conn) {
 	}()
 	scanner := bufio.NewScanner(conn)
 	for scanner.Scan() {
-		go func() {
-			b := scanner.Bytes()
-			var task TaskRequest
-			var result *TaskResult
-			if err := json.Unmarshal(b, &task); err != nil {
-				result = &TaskResult{
-					ExitCode: -1,
-					Error:    err.Error(),
-				}
-			} else {
-				result = t.runTask(conn, &task)
+		b := scanner.Bytes()
+		var task TaskRequest
+		var result *TaskResult
+		if err := json.Unmarshal(b, &task); err != nil {
+			result = &TaskResult{
+				ExitCode: -1,
+				Error:    err.Error(),
 			}
-			m, _ := json.Marshal(result)
-			if _, err := fmt.Fprintln(conn, string(m)); err != nil {
-				log.Println(err)
-			}
-		}()
+		} else {
+			result = t.runTask(&task)
+		}
+		m, _ := json.Marshal(result)
+		if _, err := fmt.Fprintln(conn, string(m)); err != nil {
+			log.Println(err)
+		}
 	}
 	if err := scanner.Err(); err != nil {
 		log.Println(err)
 	}
 }
 
-func (t *TaskServer) runTask(conn net.Conn, task *TaskRequest) *TaskResult {
+func (t *TaskServer) runTask(task *TaskRequest) *TaskResult {
 	if err := t.lock(); err != nil {
 		return &TaskResult{
 			Error:    err.Error(),

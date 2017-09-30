@@ -115,6 +115,11 @@ func TestTaskServerConcurrent(t *testing.T) {
 	if _, err = fmt.Fprintln(conn, `{"command": ["sleep", "5"], "timeout": 1}`); err != nil {
 		t.Fatal(err)
 	}
+	conn, err = net.Dial("tcp", addr)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer conn.Close()
 	if _, err = fmt.Fprintln(conn, `{"command": ["echo", "hello?"]}`); err != nil {
 		t.Fatal(err)
 	}
